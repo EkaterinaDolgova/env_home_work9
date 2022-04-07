@@ -2,6 +2,7 @@ package sky.pro.env_home_work9.service;
 
 import org.springframework.stereotype.Service;
 import sky.pro.env_home_work9.domain.Employee;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List <Employee>  employees = new ArrayList(List.of(
+    private final List<Employee> employees = new ArrayList(List.of(
             new Employee("Петров Петр Петрович", 1, 20000),
             new Employee("Иванов Иван Иванович", 2, 30000),
             new Employee("Сидоров Степан Геннадьевич", 1, 50000),
@@ -27,39 +28,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees;
     }
 
-   @Override
+    @Override
     public String amount(Integer department) {
         int costAmount = 0;
         double averageSalary = 0;
-       //Выводит все номера отдела
-     //  final List<Integer> departments = employees.stream().map(e->{return e.getDepartment();}).collect(Collectors.toList());
-     //  return departments;
-//Поиск по отделу и выдает список сотрудников
-  /*     final List<Employee> departments = employees.stream()
-                       .filter(e->e.getDepartment()==department)
-            .collect(Collectors.toList());
-       return departments;*/
-       final Integer sum = employees.stream()
-               .filter(e->e.getDepartment()==department).mapToInt(e -> e.getSalary()).sum();
-       final Integer count = Math.toIntExact(employees.stream()
-               .filter(e -> e.getDepartment() == department).count());
-       costAmount =sum*30;
-       averageSalary = sum / count;
-       return "Сумма затрат на зарплаты в месяц: " + costAmount +
-               "р. : Среднее значение зарплат: " + averageSalary + "р. в отделе № " + department;
+        final Integer sum = employees.stream()
+                .filter(e -> e.getDepartment() == department).mapToInt(e -> e.getSalary()).sum();
+        final Integer count = Math.toIntExact(employees.stream()
+                .filter(e -> e.getDepartment() == department).count());
+        costAmount = sum * 30;
+        averageSalary = sum / count;
+        return "Сумма затрат на зарплаты в месяц: " + costAmount +
+                "р. : Среднее значение зарплат: " + averageSalary + "р. в отделе № " + department;
 
     }
+
     @Override
     public String maxSalary(Integer department) {
         final Optional<Employee> maxSalary = employees.stream()
-                .filter(e->e.getDepartment()==department)
+                .filter(e -> e.getDepartment() == department)
                 .max(Comparator.comparing(Employee::getSalary));
         return "Сотрудник с максимальной зарплатой: " + maxSalary + "р.";
     }
+
     @Override
     public String minSalary(Integer department) {
         final Optional<Employee> minSalary = employees.stream()
-                .filter(e->e.getDepartment()==department)
+                .filter(e -> e.getDepartment() == department)
                 .min(Comparator.comparing(Employee::getSalary));
         return "Сотрудник с минимальной зарплатой: " + minSalary + "р.";
     }
