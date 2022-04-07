@@ -22,6 +22,14 @@ public class EmployeeController {
     public String employeeAmount(@RequestParam Integer department) {
         return employeeService.amount(department);
     }
+    @GetMapping(path = "/employee/max-salary")
+    public String employeeMaxSalary(@RequestParam Integer department) {
+        return employeeService.maxSalary(department);
+    }
+    @GetMapping(path = "/employee/min-salary")
+    public String employeeMinSalary(@RequestParam Integer department) {
+        return employeeService.minSalary(department);
+    }
 
 
 }

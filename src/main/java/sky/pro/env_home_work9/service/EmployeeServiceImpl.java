@@ -3,8 +3,9 @@ package sky.pro.env_home_work9.service;
 import org.springframework.stereotype.Service;
 import sky.pro.env_home_work9.domain.Employee;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -38,14 +39,28 @@ public class EmployeeServiceImpl implements EmployeeService {
                        .filter(e->e.getDepartment()==department)
             .collect(Collectors.toList());
        return departments;*/
-       final Integer departments = employees.stream()
+       final Integer sum = employees.stream()
                .filter(e->e.getDepartment()==department).mapToInt(e -> e.getSalary()).sum();
        final Integer count = Math.toIntExact(employees.stream()
                .filter(e -> e.getDepartment() == department).count());
-       costAmount =departments*30;
-       averageSalary = departments / count;
-       return "Сумма затрат на зарплаты в месяц: " + costAmount + "р. :" + department
-               + " Среднее значение зарплат: " + averageSalary + "р. в отделе № ";
+       costAmount =sum*30;
+       averageSalary = sum / count;
+       return "Сумма затрат на зарплаты в месяц: " + costAmount +
+               "р. : Среднее значение зарплат: " + averageSalary + "р. в отделе № " + department;
 
+    }
+    @Override
+    public String maxSalary(Integer department) {
+        final Optional<Employee> maxSalary = employees.stream()
+                .filter(e->e.getDepartment()==department)
+                .max(Comparator.comparing(Employee::getSalary));
+        return "Сотрудник с максимальной зарплатой: " + maxSalary + "р.";
+    }
+    @Override
+    public String minSalary(Integer department) {
+        final Optional<Employee> minSalary = employees.stream()
+                .filter(e->e.getDepartment()==department)
+                .min(Comparator.comparing(Employee::getSalary));
+        return "Сотрудник с минимальной зарплатой: " + minSalary + "р.";
     }
 }
